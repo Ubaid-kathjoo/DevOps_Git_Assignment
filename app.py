@@ -45,10 +45,32 @@ def submit():
 @app.route('/success')
 def success():
     return render_template('success.html')
-    
+
+
+# Todo Page
 @app.route('/todo')
 def todo():
     return render_template('todo.html')
+
+
+# Submit Todo Item
+@app.route('/submittodoitem', methods=['POST'])
+def submit_todo():
+
+    try:
+        item_name = request.form['itemName']
+        item_description = request.form['itemDescription']
+
+        db["todo_items"].insert_one({
+            "itemName": item_name,
+            "itemDescription": item_description
+        })
+
+        return "Todo Item Submitted Successfully"
+
+    except Exception as e:
+        return str(e)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
